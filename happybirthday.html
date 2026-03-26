@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday Husna</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ffc0cb, #ffe4e1);
+    height: 100vh;
+}
+
+/* Balloon container BEHIND */
+.balloons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+/* Overlay (text ABOVE balloons) */
+.overlay {
+    position: relative;
+    z-index: 2;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Text styles */
+h1 { font-size: 55px; color: #ff1493; }
+h2 { font-size: 35px; color: #ff69b4; }
+p { font-size: 20px; max-width: 600px; color: #8b004b; }
+
+#countdown {
+    font-size: 30px;
+    margin-top: 20px;
+    font-weight: bold;
+    color: #d63384;
+}
+
+/* Balloons */
+.balloon {
+    position: absolute;
+    bottom: -150px;
+    width: 50px;
+    height: 70px;
+    border-radius: 50% 50% 45% 45%;
+    animation: float linear infinite;
+    opacity: 0.9;
+}
+
+/* Shine */
+.balloon::after {
+    content: "";
+    position: absolute;
+    width: 12px;
+    height: 20px;
+    background: rgba(255,255,255,0.6);
+    border-radius: 50%;
+    top: 8px;
+    left: 12px;
+}
+
+/* String */
+.balloon::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 35px;
+    background: #ccc;
+    top: 70px;
+    left: 50%;
+}
+
+/* Floating */
+@keyframes float {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-120vh); }
+}
+
+/* Random colors */
+.red { background: radial-gradient(circle at 30% 30%, #ff6666, red); }
+.blue { background: radial-gradient(circle at 30% 30%, #66a3ff, blue); }
+.yellow { background: radial-gradient(circle at 30% 30%, #ffff66, gold); }
+.green { background: radial-gradient(circle at 30% 30%, #66ff99, green); }
+.pink { background: radial-gradient(circle at 30% 30%, #ff99cc, deeppink); }
+.orange { background: radial-gradient(circle at 30% 30%, #ffcc66, orange); }
+
+/* Fireworks */
+.firework {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    box-shadow:
+        0 0 10px white,
+        20px 0 red, -20px 0 blue,
+        0 20px yellow, 0 -20px green,
+        15px 15px pink, -15px -15px orange;
+    animation: explode 1s ease-out infinite;
+    z-index: 1;
+}
+
+@keyframes explode {
+    0% { transform: scale(0.2); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Balloons container -->
+<div class="balloons" id="balloons"></div>
+
+<!-- Text -->
+<div class="overlay">
+    <h1>🎂 Happy Birthday 🎉</h1>
+    <h2>SHEIKH HUSNA 💖</h2>
+
+    <p>
+        Wishing you a day filled with love, happiness, and endless smiles.  
+        You are truly special and deserve all the beautiful things in life ✨
+    </p>
+
+    <div id="countdown"></div>
+</div>
+
+<script>
+/* Generate MANY balloons */
+const colors = ["red","blue","yellow","green","pink","orange"];
+const container = document.getElementById("balloons");
+
+for(let i = 0; i < 25; i++) {
+    let b = document.createElement("div");
+    b.className = "balloon " + colors[Math.floor(Math.random()*colors.length)];
+    b.style.left = Math.random()*100 + "vw";
+    b.style.animationDuration = (6 + Math.random()*6) + "s";
+    container.appendChild(b);
+}
+
+/* Countdown */
+const birthday = new Date("March 27, 2026 00:00:00").getTime();
+
+const timer = setInterval(function () {
+    const now = new Date().getTime();
+    const distance = birthday - now;
+
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    document.getElementById("countdown").innerHTML =
+        days+"d "+hours+"h "+minutes+"m "+seconds+"s";
+
+    if (distance < 0) {
+        clearInterval(timer);
+        document.getElementById("countdown").innerHTML = "🎉 It's Her Birthday! 🎂";
+        startFireworks();
+    }
+}, 1000);
+
+/* Fireworks */
+function startFireworks() {
+    setInterval(() => {
+        let fw = document.createElement("div");
+        fw.className = "firework";
+        fw.style.left = Math.random()*100+"vw";
+        fw.style.top = Math.random()*80+"vh";
+        document.body.appendChild(fw);
+
+        setTimeout(()=>fw.remove(),1000);
+    },300);
+}
+</script>
+
+</body>
+</html>
